@@ -117,6 +117,11 @@ function initSender() {
     if (timer !== undefined) schedule();
   });
   byId("pair").addEventListener("click", showPair);
+  byId("reset-send").addEventListener("click", () => {
+    index = 0;
+    showPair();
+    note.textContent = "送信位置をリセットしました。次は1文字目から始まります。";
+  });
   message.addEventListener("input", () => {
     edited = true;
     prepare();
