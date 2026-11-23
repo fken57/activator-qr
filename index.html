@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="文章を一文字ずつQRコードで送信し、スマホで復元する実験。">
+<title>起動因子 — QR光通信実験</title>
+<link rel="stylesheet" href="./style.css">
+<script defer src="./vendor/qrcode.js"></script>
+<script defer src="./vendor/jsQR.js"></script>
+<script defer src="./app.js"></script>
+</head>
+<body>
+<header class="top"><a href="./">起動因子<span> / ACTIVATOR</span></a><a id="switch" href="?receive">スマホ受信機</a></header>
+<main>
+  <div class="intro">
+    <div class="eyebrow">OPTICAL TRANSMISSION</div>
+    <h1>起動因子<span>。</span></h1>
+    <p>1文字を、1枚のQRに。スマホのカメラで、物語を受信する。</p>
+  </div>
+  <section id="sender" class="layout" aria-label="送信機">
+    <div class="panel stage">
+      <div class="panel-head"><h2 id="mode">接続用 QR</h2><span id="frame" class="mono">STANDBY</span></div>
+      <div class="screen"><canvas id="qr" role="img" aria-label="接続用QRコード"></canvas></div>
+      <progress id="sent" value="0" max="1" aria-label="送信中の文字位置"></progress>
+      <div class="controls">
+        <button id="play" type="button" disabled>送信開始</button>
+        <button id="pair" type="button" class="secondary" disabled>接続用QRを表示</button>
+        <label for="speed">速度</label>
+        <select id="speed">
+          <option value="1">1 文字/秒</option><option value="2">2 文字/秒</option>
+          <option value="4" selected>4 文字/秒</option><option value="8">8 文字/秒</option>
+          <option value="12">12 文字/秒</option>
+        </select>
+      </div>
+      <p id="send-note" class="note" role="status">スマホで接続用QRを読み取ってください。</p>
+    </div>
+    <div class="panel instructions">
+      <h2>受信するには</h2>
+      <ol>
+        <li>スマホ標準のQRリーダーで、接続用QRを読み取ります。</li>
+        <li>開いたページで「カメラを開始」を押します。</li>
+        <li>この画面で「送信開始」を押し、スマホを流れるQRに向けます。</li>
+      </ol>
+      <p class="note">最後の文字まで送ると先頭に戻ります。読み取れなかった文字は次の周回で補えます。</p>
+      <details>
+        <summary>送信する文章を編集</summary>
+        <label for="message">『綿引助教 vs フラットアース教団』</label>
+        <textarea id="message" rows="10" placeholder="送信する文章を入力"></textarea>
+        <p class="note" id="count"></p>
+      </details>
+    </div>
+  </section>
+  <section id="receiver" class="layout" aria-label="受信機" hidden>
+    <div class="panel stage">
+      <div class="panel-head"><h2>スマホ受信機</h2><span id="received" class="mono">0 / —</span></div>
+      <div class="viewfinder"><video id="camera" autoplay playsinline muted></video><span aria-hidden="true"></span></div>
+      <progress id="reception" value="0" max="1" aria-label="受信した文字数"></progress>
+      <div class="controls">
+        <button id="scan" type="button">カメラを開始</button>
+        <button id="clear" type="button" class="secondary">受信をリセット</button>
+      </div>
+      <p id="receive-note" class="note" role="status">背面カメラを、送信中のQRに向けてください。</p>
+    </div>
+    <div class="panel instructions">
+      <div class="panel-head"><h2>復元した文章</h2><button id="copy" type="button" class="secondary" disabled>コピー</button></div>
+      <pre id="result" tabindex="0">受信した文字がここに表示されます。</pre>
+    </div>
+  </section>
+</main>
+</body>
+</html>
